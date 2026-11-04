@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Reaction Rescue is a story-driven chemistry game about balancing chemical equations.">
+  <meta name="theme-color" content="#eff0e5">
+  <title>Reaction Rescue: Station Zero — Chemistry Game</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#game">Skip to game</a>
+
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Reaction Rescue home">
+      <span class="brand-symbol" aria-hidden="true">
+        <svg viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="4"></circle>
+          <ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(30 24 24)"></ellipse>
+          <ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(-30 24 24)"></ellipse>
+        </svg>
+      </span>
+      <span class="brand-type">
+        <strong>Reaction</strong>
+        <strong>Rescue</strong>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html" aria-current="page">Play</a>
+      <a href="#lab-guide">Lab guide</a>
+      <a href="about.html">About course</a>
+    </nav>
+
+    <a class="outline-link" href="about.html">Course file <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="game">
+    <section class="game-shell" aria-labelledby="game-title">
+      <div class="alert-strip">
+        <div>
+          <span class="alert-pulse" aria-hidden="true"></span>
+          <strong>Helios-9</strong>
+          <span>Emergency protocol active</span>
+        </div>
+        <div class="alert-readout">
+          <span>O₂ reserve</span>
+          <strong>CRITICAL</strong>
+        </div>
+      </div>
+
+      <div class="game-grid">
+        <aside class="mission-panel">
+          <p class="eyebrow">Chemistry · Chemical equations</p>
+          <h1 id="game-title">Balance the reaction.<br><em>Save the station.</em></h1>
+          <p class="intro">
+            A meteor strike has shut down Helios-9’s oxygen loop. As chemical engineer Mira Chen, you have five reactor modules and one chance to bring the crew home.
+          </p>
+
+          <div class="station-status">
+            <div class="status-avatar" aria-hidden="true">
+              <span class="status-eye"></span>
+            </div>
+            <div>
+              <small>KEPLER · STATION CONTROL</small>
+              <strong id="missionName">Oxygen, Now</strong>
+            </div>
+            <span class="round-badge" id="roundBadge">01 / 05</span>
+          </div>
+
+          <div class="story-card">
+            <div class="story-meta">
+              <span>Incoming message</span>
+              <span id="storyTag">Priority one</span>
+            </div>
+            <p id="storyText">
+              Mira, the impact knocked out the oxygen loop. If we can synthesize water from the reserve tanks, the crew has four more hours.
+            </p>
+            <div class="story-signature">
+              <span aria-hidden="true">KP</span>
+              <div><strong>KEPLER</strong><small>Station control AI</small></div>
+            </div>
+          </div>
+
+          <div class="mission-path">
+            <p>Reactor sequence</p>
+            <ol id="missionPath"></ol>
+          </div>
+
+          <a class="inline-link" href="about.html">Open the course file <span aria-hidden="true">→</span></a>
+        </aside>
+
+        <section class="lab-panel" aria-labelledby="console-title">
+          <div class="lab-heading">
+            <div>
+              <p class="eyebrow">Reaction core</p>
+              <h2 id="console-title">Stoichiometry control</h2>
+            </div>
+            <div class="lab-status">
+              <span id="labStatusDot" aria-hidden="true"></span>
+              <div><small>Core state</small><strong id="coreState">UNSTABLE</strong></div>
+            </div>
+          </div>
+
+          <div class="reactor-band" aria-hidden="true">
+            <div class="reactor-orb">
+              <span class="orb-core"></span>
+              <span class="orb-ring ring-one"></span>
+              <span class="orb-ring ring-two"></span>
+            </div>
+            <div class="reactor-vitals">
+              <span>Pressure</span><strong id="pressureValue">0.42</strong><i>MPa</i>
+            </div>
+            <div class="reactor-trace">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="reactor-vitals">
+              <span>Signal</span><strong id="signalValue">17</strong><i>%</i>
+            </div>
+          </div>
+
+          <div class="challenge-heading">
+            <div>
+              <span class="challenge-label">Current procedure</span>
+              <h3 id="challengeTitle">Synthesize water</h3>
+            </div>
+            <span class="difficulty" id="difficultyLabel">Level 1</span>
+          </div>
+
+          <div class="equation-card" aria-label="Chemical equation">
+            <div class="equation-side" id="reactants"></div>
+            <div class="equation-arrow" aria-hidden="true">
+              <span></span>
+              <b>→</b>
+            </div>
+            <div class="equation-side" id="products"></div>
+          </div>
+
+          <div class="balance-panel">
+            <div class="balance-heading">
+              <div>
+                <span>Live atom inventory</span>
+                <p>Every element must have the same count on both sides.</p>
+              </div>
+              <span class="balance-state" id="balanceState">Unbalanced</span>
+            </div>
+            <div class="atom-table" role="table" aria-label="Atom count comparison">
+              <div class="atom-row atom-head" role="row">
+                <span role="columnheader">Element</span>
+                <span role="columnheader">Reactants</span>
+                <span role="columnheader">Products</span>
+                <span role="columnheader">Status</span>
+              </div>
+              <div id="atomRows"></div>
+            </div>
+          </div>
+
+          <div class="feedback" id="feedback" aria-live="polite">
+            <span class="feedback-bullet" aria-hidden="true">i</span>
+            <span id="feedbackText">Adjust each coefficient until the atom inventory is balanced.</span>
+          </div>
+
+          <div class="action-row">
+            <button class="hint-button" id="hintButton" type="button">
+              <span aria-hidden="true">?</span> Scan for a clue
+            </button>
+            <button class="ignite-button" id="igniteButton" type="button">
+              <span>Ignite reactor</span>
+              <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="lab-guide" id="lab-guide" aria-labelledby="guide-title">
+      <div class="guide-copy">
+        <p class="eyebrow">Lab guide</p>
+        <h2 id="guide-title">Matter is never<br><em>lost in space.</em></h2>
+        <p>Chemical equations are inventories: atoms are rearranged, not created or destroyed.</p>
+      </div>
+      <div class="guide-cards">
+        <article>
+          <span>01</span>
+          <h3>Count every atom</h3>
+          <p>Multiply the coefficient in front of a formula by the subscript of each element inside it.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Change only coefficients</h3>
+          <p>Coefficients adjust amounts. Changing a subscript would create a different chemical.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Use the smallest ratio</h3>
+          <p>A balanced equation can still be reduced. The standard form uses the smallest whole-number coefficients.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Reaction Rescue · A chemistry learning game</p>
+    <div>
+      <a href="about.html">About the course</a>
+      <a href="index.html">Restart game</a>
+    </div>
+  </footer>
+
+  <dialog class="completion-dialog" id="completionDialog">
+    <span class="completion-symbol" aria-hidden="true">⌁</span>
+    <p class="eyebrow">Station stabilized</p>
+    <h2 id="completionTitle">Helios-9 breathes again.</h2>
+    <p id="completionMessage">
+      The reactor reaches full power. Every element balances, every chamber holds, and the station waits safely for the rescue crew.
+    </p>
+    <div class="completion-stats">
+      <span>Final score<strong id="finalScore">0</strong></span>
+      <span>Accuracy<strong id="finalAccuracy">0%</strong></span>
+    </div>
+    <button class="ignite-button" id="replayButton" type="button">
+      <span>Rerun the rescue</span>
+      <span aria-hidden="true">↻</span>
+    </button>
+  </dialog>
+</body>
+</html>
